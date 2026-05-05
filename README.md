@@ -1,186 +1,49 @@
-# 🧑‍💼 Sistem Presensi & Penggajian Karyawan (HRIS)  
-## Ponpes Darul Ulum Tlasih
+# 📍 SmartGeo HRIS - Sistem Presensi & Penggajian (Laravel 12)
 
-Sistem Presensi dan Penggajian berbasis web (HRIS) yang dirancang untuk mengelola kehadiran, data karyawan, serta proses penggajian secara otomatis dan terintegrasi.
+![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-563D7C?style=for-the-badge&logo=bootstrap)
+![AdminLTE](https://img.shields.io/badge/AdminLTE-v4-343a40?style=for-the-badge)
+![PWA](https://img.shields.io/badge/PWA-Ready-blue?style=for-the-badge&logo=pwa)
 
-🚧 **Status: Development Project**
+**SmartGeo HRIS** adalah aplikasi manajemen sumber daya manusia (HR) modern yang berfokus pada validitas data kehadiran dan otomatisasi penggajian. Aplikasi ini dirancang khusus untuk mencegah kecurangan absensi menggunakan teknologi **GPS Geofencing** dan **Verifikasi Selfie**, serta mengintegrasikan seluruh siklus karyawan mulai dari rekrutmen hingga slip gaji digital.
 
----
-
-## 📌 Tentang Proyek
-
-Aplikasi ini merupakan bagian dari digitalisasi sistem internal Pondok Pesantren Darul Ulum Tlasih yang berfokus pada pengelolaan sumber daya manusia (SDM).
-
-Sistem ini digunakan untuk:
-- Monitoring kehadiran karyawan
-- Validasi aktivitas kerja
-- Otomatisasi penggajian
-- Pengelolaan data pegawai secara terpusat
-
-⚠️ **Catatan:**  
-Sistem ini **khusus untuk karyawan/pegawai**, bukan untuk santri.
-
-Digunakan oleh:
-- Staff administrasi  
-- Ustadz / tenaga pengajar  
-- Karyawan operasional  
+Aplikasi ini juga sudah mendukung **PWA (Progressive Web App)**, sehingga bisa diinstal di HP Android/iOS layaknya aplikasi native.
 
 ---
 
-## 🎯 Tujuan Pengembangan
+## 🌟 Fitur Unggulan
 
-- Mengurangi sistem absensi manual
-- Meningkatkan akurasi data kehadiran
-- Mempermudah proses payroll
-- Meningkatkan transparansi data SDM
-- Mendukung transformasi digital pesantren
+### 1. Absensi Anti-Fraud (Anti-Curang)
+* **GPS Geofencing Server-Side:** Validasi jarak lokasi pegawai vs kantor dilakukan di sisi server menggunakan *Haversine Formula*. Aman dari manipulasi client-side.
+* **Liveness Selfie:** Wajib mengambil foto langsung dari kamera (Webcam/HP), tidak bisa upload file dari galeri untuk mencegah manipulasi.
+* **Smart Attendance Rules:** Sistem otomatis menolak absen jika dilakukan di luar radius kantor atau di luar jam yang ditentukan.
+* **Multi-Office Support:** Admin dapat mengatur banyak lokasi kantor dengan titik koordinat dan radius toleransi yang berbeda-beda.
 
----
+### 2. Penggajian Otomatis (Smart Payroll)
+* **Kalkulasi Gaji Bersih:** Sistem menghitung otomatis: `(Gaji Pokok + Tunjangan + Uang Makan + Lembur) - (BPJS + Pajak + Denda Telat + Cicilan Kasbon)`.
+* **Logic "No Work No Pay":** Pegawai yang tidak memiliki data absensi sama sekali dalam satu bulan tidak akan ter-generate gajinya (kecuali level Direktur).
+* **Slip Gaji Digital:** Cetak slip gaji otomatis dalam format PDF yang rapi.
 
-## ✨ Fitur Utama
+### 3. Manajemen Birokrasi Digital
+* **Lembur Terkontrol:** Pegawai mengajukan lembur -> Manager melakukan Approval. Durasi lembur Weekday dibatasi sistem (Max 2 Jam) untuk efisiensi budget perusahaan.
+* **Cuti & Izin:** Pengajuan cuti minimal H-3. Upload bukti surat dokter untuk izin sakit.
+* **Kasbon (Pinjaman):** Validasi otomatis limit cicilan (Max 30% dari Gaji) dan pengecekan hutang aktif.
 
-- 📍 **Absensi Berbasis Lokasi (GPS / Geofencing)**  
-- 🤳 **Validasi Selfie (Anti Titip Absen)**  
-- ✅ **Approval Presensi (Admin / Atasan)**  
-- 💰 **Perhitungan Gaji Otomatis (Payroll)**  
-- 📊 **Dashboard Monitoring Karyawan**  
-- 📱 **Mobile Friendly / PWA Ready**  
-
-💡 Sistem presensi modern umumnya menggunakan GPS dan validasi foto untuk memastikan keakuratan data kehadiran. :contentReference[oaicite:0]{index=0}  
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: Laravel  
-- **Bahasa Pemrograman**: PHP 8+  
-- **Database**: MySQL  
-- **Frontend**: Blade / Tailwind CSS  
-- **Arsitektur**: MVC  
+### 4. Keamanan & Teknologi
+* **PWA (Mobile Ready):** Aplikasi dapat diinstal ke *Home Screen* HP, berjalan *full-screen* tanpa address bar browser.
+* **Audit Trail:** Mencatat aktivitas sensitif Admin (Edit Gaji, Hapus Data, dll).
+* **Force Change Password:** Pegawai baru wajib mengganti password default saat login pertama demi keamanan.
 
 ---
 
-## 🏗️ Arsitektur Sistem
+## 🛠️ Teknologi yang Digunakan
 
-```
-Karyawan
-   ↓
-Presensi (GPS + Selfie)
-   ↓
-Database
-   ↓
-Validasi Admin
-   ↓
-Payroll Processing
-   ↓
-Dashboard & Laporan
-```
+* **Backend Framework:** Laravel 12
+* **Frontend UI:** AdminLTE v4 (Bootstrap 5)
+* **Database:** MySQL
+* **Mapping Engine:** Leaflet.js + OpenStreetMap
+* **Camera API:** Webcam.js
+* **PDF Generator:** DomPDF
+* **PWA:** Service Worker & Web Manifest
 
----
 
-## ⚙️ Instalasi
-
-```bash
-git clone https://github.com/Luthfan-Rofian/presensi-penggajian-app.git
-cd presensi-penggajian-app
-
-composer install
-npm install
-
-cp .env.example .env
-php artisan key:generate
-```
-
-### 🔧 Konfigurasi Database
-
-Edit file `.env`:
-
-```
-DB_DATABASE=your_database
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-```
-
-### ▶️ Jalankan Aplikasi
-
-```bash
-php artisan migrate
-php artisan serve
-```
-
-Akses di:  
-http://localhost:8000
-
----
-
-## 🔗 Integrasi Sistem Pesantren
-
-Sistem ini merupakan bagian dari ekosistem digital:
-
-| Sistem | Fungsi |
-|------|--------|
-| 🌐 Web Profile | Informasi publik |
-| 🧾 PSB | Pendaftaran santri |
-| 🧑‍💼 HRIS | Manajemen karyawan (project ini) |
-
----
-
-## 🚀 Roadmap Pengembangan
-
-- [ ] Notifikasi WhatsApp / Email  
-- [ ] Export laporan (PDF / Excel)  
-- [ ] Integrasi fingerprint / RFID  
-- [ ] Multi-role (Admin, HRD, Manager)  
-- [ ] Sistem cuti & izin  
-- [ ] Slip gaji otomatis  
-- [ ] API integrasi sistem lain  
-
----
-
-## 📊 Use Case
-
-Sistem ini dapat digunakan untuk:
-- Pondok Pesantren  
-- Sekolah / Kampus  
-- Perusahaan  
-- Organisasi  
-
----
-
-## 💸 Dukungan Pengembangan
-
-Jika Anda ingin mendukung pengembangan sistem ini:
-
-👉 **Dukung di Saweria**  
-https://saweria.co/Luthfanrofian
-
----
-
-## ❤️ Kontribusi
-
-Kontribusi terbuka untuk pengembangan lebih lanjut:
-
-1. Fork repository  
-2. Buat branch fitur  
-3. Commit perubahan  
-4. Ajukan pull request  
-
----
-
-## 📄 Lisensi
-
-Silakan sesuaikan dengan lisensi yang digunakan pada repository ini.
-
----
-
-## 👨‍💻 Pengembang
-
-Dikembangkan oleh:
-
-**DigitalNote by Rofian**
-
----
-
-<p align="center">
-🚀 Menuju Sistem ERP Pesantren Terintegrasi
-</p>
